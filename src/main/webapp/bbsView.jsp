@@ -3,7 +3,9 @@
 <%@ page import="java.io.PrintWriter"%>
 <%@ page import="bbs.Bbs"%>
 <%@ page import="bbs.BbsDAO"%>
-<%@ page import="java.util.ArrayList" %>
+<%@ page import="comment.Comment"%>
+<%@ page import="comment.CommentDAO"%>
+<%@ page import="java.util.ArrayList"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,7 +26,7 @@
 </head>
 <body>
 
-<%
+	<%
 String userID = null;
 if (session.getAttribute("userID") != null) {
     userID = (String) session.getAttribute("userID");
@@ -112,6 +114,64 @@ bbs = new BbsDAO().getBbs(bbsID); // 조회수를 갱신한 후, 갱신된 정�
 				<a href="bbsList.jsp?selectedBoardID=<%=bbs.getBoardID()%>"
 					class="btn btn-info">목록</a>
 			</div>
+
+
+
+
+			<!-- 댓글 작성 -->
+			<% if (userID != null) { %>
+			<h4 style="margin-left: 20%; font-weight: bold;">댓글</h4>
+			<div style="width: 60%; margin: 0 auto;">
+				<form action="cmtWriteAction.jsp" method="post">
+					<input type="hidden" name="bbsID" value="<%=bbsID%>"> <input
+						type="text" name="cmtContent" required placeholder="댓글을 남겨보세요."
+						style="width: 90%; height: 5%;">
+					<button type="submit" class="btn btn-info">완료</button>
+				</form>
+			</div>
+			<% } %>
+
+			<!-- 댓글 목록 -->
+			<div style="width: 50%; margin-left: 20%">
+				<%
+    ArrayList<Comment> comments = new CommentDAO().getCommentList(bbsID);
+    for (Comment comment : comments) {
+    %>
+				<div style="display: flex; align-items: start;">
+					<!-- 댓글 리스트 -->
+					<p><%=comment.getUserID()%>(<%=comment.getCmtDate()%>)
+					</p>
+					<p style="margin-left: 20px;" id="content_<%=comment.getCmtID()%>"><%=comment.getCmtContent()%></p>
+
+					<!-- 댓글 수정 -->
+					<% if (userID != null && userID.equals(comment.getUserID())) { %>
+					<button onclick="showEditForm('<%=comment.getCmtID()%>')"
+						class="btn btn-default btn-xs">수정</button>
+					<form id="editForm_<%=comment.getCmtID()%>" style="display: none;"
+						action="cmtUpdateAction.jsp" method="post">
+						<input type="hidden" name="cmtID" value="<%=comment.getCmtID()%>">
+						<input type="text" name="cmtContent"
+							value="<%=comment.getCmtContent()%>">
+						<button type="submit" class="btn btn-default btn-xs">완료</button>
+					</form>
+
+					<!-- 댓글 삭제 -->
+					<form action="cmtDeleteAction.jsp" method="post">
+						<input type="hidden" name="cmtID" value="<%=comment.getCmtID()%>">
+						<button type="submit" class="btn btn-default btn-xs">삭제</button>
+					</form>
+					<% } %>
+				</div>
+				<% } %>
+			</div>
+
+			<!-- 댓글 수정폼 -->
+			<script>
+    function showEditForm(cmtID) {
+        document.getElementById('content_' + cmtID).style.display = 'none';
+        document.getElementById('editForm_' + cmtID).style.display = 'block';
+    }
+</script>
 		</section>
 
 		<footer id="footer">

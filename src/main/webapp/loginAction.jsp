@@ -36,7 +36,6 @@ request.setCharacterEncoding("UTF-8");
 		   session.setAttribute("userID", user.getUserID());//userID를 세션값할당
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
-		script.println("alert('로그인에 성공하셨습니다.')");
 		script.println("location.href = 'main.jsp'"); // 로그인 되면 이동할페이지
 		script.println("</script>");
 	} else if (result == 0) { // 비밀번호 불일치시

@@ -8,8 +8,7 @@ public class Comment {
 	private String cmtDate;
 	private String cmtContent;
 	private int bbsID;
-	private int cmtAvaliable;
-	
+	private int cmtAvailable;
 	
 	public int getBbsID() {
 		return bbsID;
@@ -17,11 +16,12 @@ public class Comment {
 	public void setBbsID(int bbsID) {
 		this.bbsID = bbsID;
 	}
-	public int getCmtAvaliable() {
-		return cmtAvaliable;
+
+	public int getCmtAvailable() {
+		return cmtAvailable;
 	}
-	public void setCmtAvaliable(int cmtAvaliable) {
-		this.cmtAvaliable = cmtAvaliable;
+	public void setCmtAvailable(int cmtAvailable) {
+		this.cmtAvailable = cmtAvailable;
 	}
 	public int getCmtID() {
 		return cmtID;
