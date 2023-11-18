@@ -1,0 +1,30 @@
+@charset "UTF-8";
+/* 외부 스타일 시트를 사용하여 스타일을 정의합니다. */
+.custom-form {
+	max-width: 350px; /* 폼의 최대 너비를 줄임 */
+	margin: 0 auto; /* 수평 가운데 정렬 */
+	padding: 10px; /* 패딩을 줄임 */
+}
+
+.custom-form h3 {
+	font-size: 20px; /* 폰트 크기를 줄임 */
+	text-align: center; /* 가운데 정렬 */
+}
+
+.custom-form .form-group {
+	margin-bottom: 10px; /* 마진을 줄임 */
+}
+
+.custom-form label {
+	font-size: 14px; /* 폰트 크기를 줄임 */
+}
+
+.custom-form .form-control {
+	font-size: 12px; /* 폰트 크기를 줄임 */
+	padding: 8px; /* 패딩을 줄임 */
+}
+
+.custom-form .btn {
+	font-size: 16px; /* 폰트 크기를 줄임 */
+	padding: 10px; /* 패딩을 줄임 */
+}

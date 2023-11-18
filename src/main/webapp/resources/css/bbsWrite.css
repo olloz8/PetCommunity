@@ -1,0 +1,16 @@
+@charset "UTF-8";
+.navbar-custom {
+	background-color: black;
+	border: none;
+	z-index: 2;
+}
+.btn-dark:hover, .btn-dark:focus {
+	background: #373737;
+	border-color: #373737;
+	color: #fff;
+}
+
+.btn-dark {
+	background: #555;
+	color: #fff;
+}
