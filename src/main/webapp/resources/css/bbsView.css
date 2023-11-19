@@ -44,11 +44,6 @@ td {
 	text-align: center;
 }
 
-.board-table .th-content {
-	width: 200px;
-	text-align: center;
-}
-
 .board-table th, .board-table td {
 	padding: 14px 0;
 }
