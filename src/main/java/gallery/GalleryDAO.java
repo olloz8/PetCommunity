@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GalleryDAO {
 	private Connection conn;
@@ -22,6 +24,96 @@ public class GalleryDAO {
 		}
 	}
 	
+    // 파일 이름으로 게시글의 galleryID를 가져오는 메서드
+    public int getGalleryIDByFileName(String fileName) {
+        int galleryID = 0;
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            // 'gallery' 테이블을 사용하도록 수정
+            String sql = "SELECT galleryID FROM gallery WHERE fileName = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, fileName);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                galleryID = rs.getInt("galleryID");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeResources(pstmt, rs);
+        }
+
+        return galleryID;
+    }
+
+    // 파일 이름으로 게시글의 postID를 가져오는 메서드
+    public int getPostIdByFileName(String fileName) {
+        int postId = 0;
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            String sql = "SELECT postID FROM gallery WHERE fileName = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, fileName);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                postId = rs.getInt("postID");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeResources(pstmt, rs);
+        }
+
+        return postId;
+    }
+	
+    public Gallery getGalleryByFileName(String fileName) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Gallery gallery = null;
+
+        try {
+            String SQL = "SELECT * FROM GALLERY WHERE fileName = ?";
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, fileName);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                gallery = new Gallery();
+                gallery.setGalleryID(rs.getInt("galleryID"));
+                gallery.setGalleryTitle(rs.getString("galleryTitle"));
+                gallery.setUserID(rs.getString("userID"));
+                gallery.setGalleryDate(rs.getString("galleryDate"));
+                gallery.setGalleryContent(rs.getString("galleryContent"));
+                gallery.setHit(rs.getInt("hit"));
+                gallery.setGalleryAvailable(rs.getInt("galleryAvailable"));
+                gallery.setFileName(rs.getString("fileName"));
+                gallery.setFileRealName(rs.getString("fileRealName"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            /* 리소스 해제 코드 (pstmt, rs 등) */
+            try {
+                if (pstmt != null) pstmt.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return gallery;
+    }
+    
+    
 	//날짜값 가져오기
 	public String getDate() {
 		String SQL = "SELECT NOW()";
@@ -88,6 +180,21 @@ public class GalleryDAO {
 	    return -1; // DB 오류
 	}
 	
+    public List<String> getAllFileRealNames() {
+        List<String> fileRealNames = new ArrayList<>();
+        String SQL = "SELECT fileRealName FROM gallery";
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(SQL);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                fileRealNames.add(rs.getString("fileRealName"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileRealNames;
+    }
+    
     //게시글 리스트
     public ArrayList<Gallery> getList(int pageNumber) {
         String SQL = "SELECT * FROM GALLERY WHERE galleryID < ? AND galleryAvailable = 1 ORDER BY galleryID DESC LIMIT 10";
@@ -115,7 +222,9 @@ public class GalleryDAO {
         return list;
     }
 		
-    //페이징 처리
+    
+    
+    	//페이징 처리
 		public boolean nextPage(int pageNumber) {
 			String SQL = "SELECT * FROM GALLERY WHERE galleryID < ? AND galleryAvailable = 1";
 			try {
@@ -132,31 +241,40 @@ public class GalleryDAO {
 		}	
 		
 		//게시글 가져오기
-		public Gallery getGallery(int galleryID) {
-			String SQL = "SELECT * FROM GALLERY WHERE galleryID = ?";
-			try {
-				PreparedStatement pstmt = conn.prepareStatement(SQL);
-				pstmt.setInt(1, galleryID);
-				rs = pstmt.executeQuery();
-				if (rs.next()) {
-					Gallery gallery = new Gallery();
-					gallery.setGalleryID(rs.getInt(1));
-					gallery.setGalleryTitle(rs.getString(2));
-					gallery.setUserID(rs.getString(3));
-					gallery.setGalleryDate(rs.getString(4));
-					gallery.setGalleryContent(rs.getString(5));
-					gallery.setHit(rs.getInt(6));
-					gallery.setGalleryAvailable(rs.getInt(7));
+	    public Gallery getGallery(int galleryID) {
+	        PreparedStatement pstmt = null;
+	        ResultSet rs = null;
+	        Gallery gallery = null;
+
+	        try {
+	            String SQL = "SELECT * FROM GALLERY WHERE galleryID = ?";
+	            pstmt = conn.prepareStatement(SQL);
+	            pstmt.setInt(1, galleryID);
+	            rs = pstmt.executeQuery();
+
+	            if (rs.next()) {
+	                gallery = new Gallery();
+	                gallery.setGalleryID(rs.getInt("galleryID"));
+	                gallery.setGalleryTitle(rs.getString("galleryTitle"));
+	                gallery.setUserID(rs.getString("userID"));
+	                gallery.setGalleryDate(rs.getString("galleryDate"));
+	                gallery.setGalleryContent(rs.getString("galleryContent"));
+	                gallery.setHit(rs.getInt("hit"));
+	                gallery.setGalleryAvailable(rs.getInt("galleryAvailable"));
 	                gallery.setFileName(rs.getString("fileName"));
 	                gallery.setFileRealName(rs.getString("fileRealName"));
-					return gallery;
-				}
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-			return null;
-		}
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        } finally {
+	        	closeResources(pstmt, rs);
+	        }
+
+	        return gallery;
+	    }
 		
+	    
+	    
 		//게시글 수정
 		public int update(int galleryID, String galleryTitle, String galleryContent) {
 			String SQL = "UPDATE GALLERY SET galleryTitle = ?, galleryContent = ? WHERE galleryID = ?";
@@ -184,4 +302,14 @@ public class GalleryDAO {
 			}
 			return -1; //DB 오류 
 		}
-}
+		
+	    // 리소스를 닫는 메서드
+	    private void closeResources(PreparedStatement pstmt, ResultSet rs) {
+	        try {
+	            if (pstmt != null) pstmt.close();
+	            if (rs != null) rs.close();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}

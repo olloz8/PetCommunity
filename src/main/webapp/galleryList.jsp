@@ -22,6 +22,22 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <title>멍어스</title>
+<style>
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 10px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 <body>
 	<%
@@ -75,7 +91,27 @@
                         %>
 					</tbody>
 				</table>
-
+				
+<div class="gallery">
+<%
+    try {
+        gallery.GalleryDAO galleryDao = new gallery.GalleryDAO();
+        List<String> fileRealNames = galleryDao.getAllFileRealNames();
+        for (String fileRealName : fileRealNames) {
+            // 파일 이름으로 게시글의 galleryID를 가져오는 메서드 호출
+            int galleryId = galleryDao.getGalleryIDByFileName(fileRealName);
+%>
+            <a href="galleryView.jsp?galleryID=<%=galleryId%>">
+                <img src="uploded/<%=fileRealName %>" alt="업로드한 이미지">
+            </a>
+<%
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+%>
+</div>
+			
 				<%
                 if(pageNumber != 1) { //현재 페이지가 있는지, 버튼 생성
             %>

@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter"%>
 <%@ page import="gallery.Gallery"%>
 <%@ page import="gallery.GalleryDAO"%>
@@ -9,42 +8,22 @@
 <%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
-<link href="resources/css/bbsView.css" rel="stylesheet" type="text/css">
-<link href="resources/css/fix.css" rel="stylesheet" type="text/css">
-
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<style>
-.board-table .th-hit {
-	width: 200px;
-	text-align: center;
-}
-</style>
 <head>
-<meta charset="UTF-8">
-<meta name=viewport content="width=device-width , initial-scale=1">
-
-<link href="resources/css/galleryView.css" rel="stylesheet"
-	type="text/css">
-<link href="resources/css/fix.css" rel="stylesheet" type="text/css">
-
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<style>
-.board-table .th-hit {
-	width: 200px;
-	text-align: center;
-}
-</style>
-<title>멍어스</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="resources/css/bbsView.css" rel="stylesheet" type="text/css">
+    <link href="resources/css/galleryView.css" rel="stylesheet" type="text/css">
+    <link href="resources/css/fix.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .board-table .th-hit {
+            width: 200px;
+            text-align: center;
+        }
+    </style>
+    <title>멍어스</title>
 </head>
 <body>
 
@@ -102,22 +81,53 @@
 			<h3>멍갤러리</h3>
 			<div id="container_box">
 				<table class="board-table" style="margin: 0 auto;">
-					<thead>
-						<tr>
-							<th scope="col" class="th-title">제목</th>
-							<td><%=gallery.getGalleryTitle()%></td>
-							<th scope="col" class="th-hit">조회수</th>
-							<td><%=gallery.getHit()%></td>
-
-						</tr>
-
-						<tr>
-							<th scope="col" class="th-user">작성자</th>
-							<td><%=gallery.getUserID()%></td>
-							<th scope="col" class="th-date">날짜</th>
-							<td><%=gallery.getGalleryDate()%></td>
-						</tr>
-					</thead>
+<thead>
+    <tr>
+        <th scope="col" class="th-title">제목</th>
+        <td>
+            <%
+                if (gallery != null) {
+                    out.print(gallery.getGalleryTitle());
+                } else {
+                    out.print("갤러리가 존재하지 않습니다.");
+                }
+            %>
+        </td>
+        <th scope="col" class="th-hit">조회수</th>
+        <td>
+            <%
+                if (gallery != null) {
+                    out.print(gallery.getHit());
+                } else {
+                    // 갤러리가 없으므로 조회수도 없음
+                    out.print("");
+                }
+            %>
+        </td>
+    </tr>
+    <tr>
+        <th scope="col" class="th-user">작성자</th>
+        <td>
+            <%
+                if (gallery != null) {
+                    out.print(gallery.getUserID());
+                } else {
+                    out.print("");
+                }
+            %>
+        </td>
+        <th scope="col" class="th-date">날짜</th>
+        <td>
+            <%
+                if (gallery != null) {
+                    out.print(gallery.getGalleryDate());
+                } else {
+                    out.print("");
+                }
+            %>
+        </td>
+    </tr>
+</thead>
 					<tbody>
 						<tr>
 							<th scope="col" class="th-content">내용</th>
