@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter"%>
-<%@ page import="bbs.BbsDAO"%>
-<%@ page import="bbs.Bbs"%>
+<%@ page import="gallery.GalleryDAO"%>
+<%@ page import="gallery.Gallery"%>
 <%@ page import="java.util.ArrayList"%>
+<%@ page import="file.fileDAO, java.util.List" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,25 +34,8 @@
         pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
     }
     
-    BbsDAO bbsDAO = new BbsDAO();
-    int selectedBoardID = 0; // 기본값은 전체 게시판
-    if (request.getParameter("selectedBoardID") != null) {
-        selectedBoardID = Integer.parseInt(request.getParameter("selectedBoardID"));
-    }
+    GalleryDAO galleryDAO = new GalleryDAO();
 
-    // 선택한 게시판의 정보 가져오기
-    String boardTitle = "";
-    String boardContent ="";
-    if (selectedBoardID == 1) {
-        boardTitle = "자유게시판";
-        boardContent = "* 주제 상관없이 자유롭게 대화하는 게시판입니다. *";
-    } else if (selectedBoardID == 2) {
-        boardTitle = "질문게시판";
-        boardContent = "* 강아지 관련 질문 이외 질문들은 금지입니다. *";
-    } else if (selectedBoardID == 3) {
-        boardTitle = "멍갤러리";
-        boardContent = "* 강아지 사진 올리는 공간 *";
-    } // 다른 게시판에 대한 조건 추가
     %>
 
 	<div id="root">
@@ -58,8 +43,7 @@
 
 		<section id="container">
 			<div id="container_box">
-				<h3><%= boardTitle %></h3>
-				<h6><%= boardContent %></h6>
+				<h3>멍갤러리</h3>
 
 				<table class="board-table">
 					<thead>
@@ -72,16 +56,18 @@
 						</tr>
 					</thead>
 					<tbody>
+
 						<%
                         // 선택한 게시판의 글 목록 가져오기
-                        ArrayList<Bbs> list = bbsDAO.getList(pageNumber, selectedBoardID);
+                        ArrayList<Gallery> list = galleryDAO.getList(pageNumber);
                         for (int i = 0; i < list.size(); i++) {
                         %>
 						<tr>
-							<td><%=list.get(i).getBbsID()%></td>
-							<td><a href="bbsView.jsp?bbsID=<%=list.get(i).getBbsID()%>"><%=list.get(i).getBbsTitle()%></a></td>
+							<td><%=list.get(i).getGalleryID()%></td>
+							<td><a
+								href="galleryView.jsp?galleryID=<%=list.get(i).getGalleryID()%>"><%=list.get(i).getGalleryTitle()%></a></td>
 							<td><%=list.get(i).getUserID()%></td>
-							<td><%=list.get(i).getBbsDate()%></td>
+							<td><%=list.get(i).getGalleryDate()%></td>
 							<td><%=list.get(i).getHit()%></td>
 						</tr>
 						<%
@@ -91,19 +77,21 @@
 				</table>
 
 				<%
-if (pageNumber != 1) {
-%>
-				<a
-					href="bbsList.jsp?pageNumber=<%=pageNumber - 1%>&selectedBoardID=<%=selectedBoardID%>">이전</a>
+                if(pageNumber != 1) { //현재 페이지가 있는지, 버튼 생성
+            %>
+				<a href="gallery.jsp?pageNumber=<%=pageNumber - 1 %>"
+					class="btn btn-success btn-arraw-left">이전</a>
 				<%
-}
-if (bbsDAO.nextPage(pageNumber + 1)) {
-%>
-				<a
-					href="bbsList.jsp?pageNumber=<%=pageNumber + 1%>&selectedBoardID=<%=selectedBoardID%>">다음</a>
-				<%
-}
-%>
+                } if(galleryDAO.nextPage(pageNumber + 1)) { //다음 페이지가 존재하는지
+            %>
+				<a href="gallery.jsp?pageNumber=<%=pageNumber + 1 %>"
+					class="btn btn-success btn-arraw-left">다음</a>
+				<% 
+                }
+            %>
+				<button>
+					<a href="galleryWrite.jsp">글쓰기</a>
+				</button>
 			</div>
 		</section>
 

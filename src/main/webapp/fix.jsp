@@ -41,10 +41,9 @@
 			</div>
 			<br>
 			<ul>
-				<li><a href="bbsList.jsp?selectedBoardID=0">전체게시판</a></li>
 				<li><a href="bbsList.jsp?selectedBoardID=1">자유게시판</a></li>
 				<li><a href="bbsList.jsp?selectedBoardID=2">질문게시판</a></li>
-				<li><a href="gallery.jsp">멍갤러리</a></li>
+				<li><a href="galleryList.jsp">멍갤러리</a></li>
 				<li><a href="calendar.jsp">멍캘린더</a></li>
 				<li><a href="map.jsp">동물병원찾기</a></li>
 				<li><a href="https://www.youtube.com/@Bodeumofficial" target='_blank'>강형욱의 보듬TV</a></li>
