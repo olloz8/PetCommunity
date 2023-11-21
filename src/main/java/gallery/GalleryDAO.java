@@ -1,5 +1,6 @@
 package gallery;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -275,32 +276,168 @@ public class GalleryDAO {
 		
 	    
 	    
-		//게시글 수정
-		public int update(int galleryID, String galleryTitle, String galleryContent) {
-			String SQL = "UPDATE GALLERY SET galleryTitle = ?, galleryContent = ? WHERE galleryID = ?";
-			try {
-				PreparedStatement pstmt = conn.prepareStatement(SQL);
-				pstmt.setString(1, galleryTitle);
-				pstmt.setString(2, galleryContent);
-				pstmt.setInt(3, galleryID);
-				return pstmt.executeUpdate();
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-			return -1; //DB 오류 
+	 // GalleryDAO 클래스에 추가할 메서드
+	    public int updateWithFile(int galleryID, String galleryTitle, String galleryContent, String fileName) {
+	        String SQL = "UPDATE GALLERY SET galleryTitle = ?, galleryContent = ?, fileName = ? WHERE galleryID = ?";
+	        try {
+	            PreparedStatement pstmt = conn.prepareStatement(SQL);
+	            pstmt.setString(1, galleryTitle);
+	            pstmt.setString(2, galleryContent);
+	            pstmt.setString(3, fileName);
+	            pstmt.setInt(4, galleryID);
+	            return pstmt.executeUpdate();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        return -1; // DB 오류 
+	    }
+
+		// 게시글 및 해당 파일 삭제
+		public int deleteGallery(int galleryID) {
+		    String selectSQL = "SELECT fileName FROM GALLERY WHERE galleryID = ?";
+		    String deleteSQL = "UPDATE GALLERY SET galleryAvailable = 0 WHERE galleryID = ?";
+
+		    try {
+		        // 파일 이름 조회
+		        PreparedStatement selectPstmt = conn.prepareStatement(selectSQL);
+		        selectPstmt.setInt(1, galleryID);
+		        ResultSet rs = selectPstmt.executeQuery();
+
+		        String fileName = null;
+		        if (rs.next()) {
+		            fileName = rs.getString("fileName");
+		        }
+
+		        // 게시글 삭제
+		        PreparedStatement deletePstmt = conn.prepareStatement(deleteSQL);
+		        deletePstmt.setInt(1, galleryID);
+		        int result = deletePstmt.executeUpdate();
+
+		        // 파일 삭제
+		        if (result > 0 && fileName != null) {
+		            // Replace "your_upload_directory" with the actual directory where your files are uploaded
+		            String uploadDir = "C:\\Users\\82103\\eclipse-workspace\\PetCommunity\\src\\main\\webapp\\uploded";
+		            File fileToDelete = new File(uploadDir + File.separator + fileName);
+
+		            if (fileToDelete.exists()) {
+		                if (fileToDelete.delete()) {
+		                    System.out.println("파일 삭제 성공");
+		                } else {
+		                    System.out.println("파일 삭제 실패");
+		                }
+		            }
+		        }
+
+		        return result;
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		    return -1; // DB 오류
 		}
 		
-		//게시글 삭제
-		public int delete(int galleryID) {
-			String SQL = "UPDATE GALLERY SET galleryAvailable = 0 WHERE galleryID = ?";
-			try {
-				PreparedStatement pstmt = conn.prepareStatement(SQL);
-				pstmt.setInt(1, galleryID);
-				return pstmt.executeUpdate();
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-			return -1; //DB 오류 
+		
+		// Assuming you have methods like these in your GalleryDAO class
+		public List<String> getFileRealNamesByAvailability(int availability) {
+		    List<String> fileRealNames = new ArrayList<>();
+		    String selectSQL = "SELECT fileRealName FROM GALLERY WHERE galleryAvailable = ?";
+
+		    try {
+		        PreparedStatement pstmt = conn.prepareStatement(selectSQL);
+		        pstmt.setInt(1, availability);
+		        ResultSet rs = pstmt.executeQuery();
+
+		        while (rs.next()) {
+		            fileRealNames.add(rs.getString("fileRealName"));
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+
+		    return fileRealNames;
+		}
+
+		public boolean isGalleryAvailable(int galleryId) {
+		    String selectSQL = "SELECT galleryAvailable FROM GALLERY WHERE galleryID = ?";
+
+		    try {
+		        PreparedStatement pstmt = conn.prepareStatement(selectSQL);
+		        pstmt.setInt(1, galleryId);
+		        ResultSet rs = pstmt.executeQuery();
+
+		        if (rs.next()) {
+		            int availability = rs.getInt("galleryAvailable");
+		            return availability == 1;
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+
+		    return false;
+		}
+		
+		// 파일이 존재하는지 확인하는 메서드
+		public boolean isFileExist(int galleryID) {
+		    String selectSQL = "SELECT fileName FROM GALLERY WHERE galleryID = ?";
+
+		    try {
+		        PreparedStatement pstmt = conn.prepareStatement(selectSQL);
+		        pstmt.setInt(1, galleryID);
+		        ResultSet rs = pstmt.executeQuery();
+
+		        return rs.next(); // 파일이 존재하면 true, 존재하지 않으면 false
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+
+		    return false;
+		}
+
+		// 파일을 수정할 수 있는 메서드
+		public int updateWithFile(int galleryID, String galleryTitle, String galleryContent, String fileName, String fileRealName) {
+		    if (isFileExist(galleryID)) {
+		        // 파일이 존재하면 파일명과 실제 파일명도 함께 업데이트
+		        String SQL = "UPDATE GALLERY SET galleryTitle = ?, galleryContent = ?, fileName = ?, fileRealName = ? WHERE galleryID = ?";
+		        try {
+		            PreparedStatement pstmt = conn.prepareStatement(SQL);
+		            pstmt.setString(1, galleryTitle);
+		            pstmt.setString(2, galleryContent);
+		            pstmt.setString(3, fileName);
+		            pstmt.setString(4, fileRealName);
+		            pstmt.setInt(5, galleryID);
+		            return pstmt.executeUpdate();
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		    } else {
+		        // 파일이 존재하지 않으면 파일명과 실제 파일명은 업데이트하지 않음
+		        String SQL = "UPDATE GALLERY SET galleryTitle = ?, galleryContent = ? WHERE galleryID = ?";
+		        try {
+		            PreparedStatement pstmt = conn.prepareStatement(SQL);
+		            pstmt.setString(1, galleryTitle);
+		            pstmt.setString(2, galleryContent);
+		            pstmt.setInt(3, galleryID);
+		            return pstmt.executeUpdate();
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		    }
+
+		    return -1; // DB 오류 
+		}
+		
+		// GalleryDAO 클래스에 추가된 메서드
+		public int update(int galleryID, String galleryTitle, String galleryContent) {
+		    String SQL = "UPDATE GALLERY SET galleryTitle = ?, galleryContent = ? WHERE galleryID = ?";
+		    try {
+		        PreparedStatement pstmt = conn.prepareStatement(SQL);
+		        pstmt.setString(1, galleryTitle);
+		        pstmt.setString(2, galleryContent);
+		        pstmt.setInt(3, galleryID);
+		        return pstmt.executeUpdate();
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		    return -1; // DB 오류 
 		}
 		
 	    // 리소스를 닫는 메서드

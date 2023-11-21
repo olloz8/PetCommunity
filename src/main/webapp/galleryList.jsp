@@ -61,55 +61,39 @@
 			<div id="container_box">
 				<h3>멍갤러리</h3>
 
-				<table class="board-table">
-					<thead>
-						<tr>
-							<th scope="col" class="th-num">번호</th>
-							<th scope="col" class="th-title">제목</th>
-							<th scope="col" class="th-user">작성자</th>
-							<th scope="col" class="th-date">날짜</th>
-							<th scope="col" class="th-hit">조회수</th>
-						</tr>
-					</thead>
-					<tbody>
-
-						<%
-                        // 선택한 게시판의 글 목록 가져오기
-                        ArrayList<Gallery> list = galleryDAO.getList(pageNumber);
-                        for (int i = 0; i < list.size(); i++) {
-                        %>
-						<tr>
-							<td><%=list.get(i).getGalleryID()%></td>
-							<td><a
-								href="galleryView.jsp?galleryID=<%=list.get(i).getGalleryID()%>"><%=list.get(i).getGalleryTitle()%></a></td>
-							<td><%=list.get(i).getUserID()%></td>
-							<td><%=list.get(i).getGalleryDate()%></td>
-							<td><%=list.get(i).getHit()%></td>
-						</tr>
-						<%
-                        }
-                        %>
-					</tbody>
-				</table>
-				
 <div class="gallery">
-<%
-    try {
-        gallery.GalleryDAO galleryDao = new gallery.GalleryDAO();
-        List<String> fileRealNames = galleryDao.getAllFileRealNames();
-        for (String fileRealName : fileRealNames) {
-            // 파일 이름으로 게시글의 galleryID를 가져오는 메서드 호출
-            int galleryId = galleryDao.getGalleryIDByFileName(fileRealName);
-%>
-            <a href="galleryView.jsp?galleryID=<%=galleryId%>">
-                <img src="uploded/<%=fileRealName %>" alt="업로드한 이미지">
-            </a>
-<%
+    <%
+        try {
+            gallery.GalleryDAO galleryDao = new gallery.GalleryDAO();
+            List<String> fileRealNames = galleryDao.getFileRealNamesByAvailability(1);
+            
+            for (String fileRealName : fileRealNames) {
+                // 파일 이름으로 게시글의 galleryID를 가져오는 메서드 호출
+                int galleryId = galleryDao.getGalleryIDByFileName(fileRealName);
+                
+                // galleryAvailable이 1인 경우에만 이미지를 표시
+                if (galleryDao.isGalleryAvailable(galleryId)) {
+                    // 게시글 정보 가져오기
+                    gallery.Gallery gallery = galleryDao.getGallery(galleryId);
+                    
+                    // galleryTitle과 userID 표시
+    %>
+                    <div class="gallery-item">
+                        <a href="galleryView.jsp?galleryID=<%=galleryId%>">
+                            <img src="uploded/<%=fileRealName %>" alt="업로드한 이미지">
+                        </a>
+                        <div class="gallery-info">
+                            <h5 style="text-align:center;"><%=gallery.getGalleryTitle()%></h5>
+                            <p style="text-align:center;"><%=gallery.getUserID()%></p>
+                        </div>
+                    </div>
+    <%
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-%>
+    %>
 </div>
 			
 				<%

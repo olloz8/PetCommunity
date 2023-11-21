@@ -1,29 +1,34 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter"%>
 <%@ page import="gallery.Gallery"%>
 <%@ page import="gallery.GalleryDAO"%>
-<%@ page import="comment.Comment"%>
-<%@ page import="comment.CommentDAO"%>
+<%@ page import="gcomment.GComment"%>
+<%@ page import="gcomment.GCommentDAO"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="resources/css/bbsView.css" rel="stylesheet" type="text/css">
-    <link href="resources/css/galleryView.css" rel="stylesheet" type="text/css">
-    <link href="resources/css/fix.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <style>
-        .board-table .th-hit {
-            width: 200px;
-            text-align: center;
-        }
-    </style>
-    <title>멍어스</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="resources/css/bbsView.css" rel="stylesheet" type="text/css">
+<link href="resources/css/galleryView.css" rel="stylesheet"
+	type="text/css">
+<link href="resources/css/fix.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+.board-table .th-hit {
+	width: 200px;
+	text-align: center;
+}
+</style>
+<title>멍어스</title>
 </head>
 <body>
 
@@ -81,21 +86,21 @@
 			<h3>멍갤러리</h3>
 			<div id="container_box">
 				<table class="board-table" style="margin: 0 auto;">
-<thead>
-    <tr>
-        <th scope="col" class="th-title">제목</th>
-        <td>
-            <%
+					<thead>
+						<tr>
+							<th scope="col" class="th-title">제목</th>
+							<td>
+								<%
                 if (gallery != null) {
                     out.print(gallery.getGalleryTitle());
                 } else {
                     out.print("갤러리가 존재하지 않습니다.");
                 }
             %>
-        </td>
-        <th scope="col" class="th-hit">조회수</th>
-        <td>
-            <%
+							</td>
+							<th scope="col" class="th-hit">조회수</th>
+							<td>
+								<%
                 if (gallery != null) {
                     out.print(gallery.getHit());
                 } else {
@@ -103,31 +108,31 @@
                     out.print("");
                 }
             %>
-        </td>
-    </tr>
-    <tr>
-        <th scope="col" class="th-user">작성자</th>
-        <td>
-            <%
+							</td>
+						</tr>
+						<tr>
+							<th scope="col" class="th-user">작성자</th>
+							<td>
+								<%
                 if (gallery != null) {
                     out.print(gallery.getUserID());
                 } else {
                     out.print("");
                 }
             %>
-        </td>
-        <th scope="col" class="th-date">날짜</th>
-        <td>
-            <%
+							</td>
+							<th scope="col" class="th-date">날짜</th>
+							<td>
+								<%
                 if (gallery != null) {
                     out.print(gallery.getGalleryDate());
                 } else {
                     out.print("");
                 }
             %>
-        </td>
-    </tr>
-</thead>
+							</td>
+						</tr>
+					</thead>
 					<tbody>
 						<tr>
 							<th scope="col" class="th-content">내용</th>
@@ -139,9 +144,8 @@
 
     // 가져온 게시글의 이미지를 표시
     if (targetGallery != null && targetGallery.getFileName() != null && !targetGallery.getFileName().isEmpty()) {
-%> <!-- 이미지 표시 --> 
-<img src="uploded/<%= targetGallery.getFileName() %>" alt="게시글 이미지">
-								<br> <%
+%> <!-- 이미지 표시 --> <img src="uploded/<%= targetGallery.getFileName() %>"
+								alt="게시글 이미지"> <br> <%
     } else {
         // 해당 게시글이 존재하지 않거나 이미지가 첨부되지 않은 경우
 %> <%
@@ -178,7 +182,7 @@
 				%>
 
 				<div style="width: 60%; margin: 0 auto;">
-					<form action="cmtWriteAction.jsp" method="post">
+					<form action="gcmtWriteAction.jsp" method="post">
 						<input type="hidden" name="galleryID" value="<%=galleryID%>">
 						<input type="text" name="cmtContent" required
 							placeholder="댓글을 남겨보세요." style="width: 90%; height: 5%;">
@@ -192,9 +196,9 @@
 				<!-- 댓글 목록 -->
 				<div style="width: 50%; margin-left: 20%">
 					<%
-					ArrayList<Comment> comments = new CommentDAO().getCommentList(galleryID);
-					for (Comment comment : comments) {
-					%>
+    ArrayList<GComment> comments = new GCommentDAO().getCommentList(galleryID);
+    for (GComment comment : comments) {
+    %>
 					<div style="display: flex; align-items: start;">
 						<!-- 댓글 리스트 -->
 						<p><%=comment.getUserID()%>(<%=comment.getCmtDate()%>)
@@ -203,12 +207,12 @@
 
 						<!-- 댓글 수정 -->
 						<%
-						if (userID != null && userID.equals(comment.getUserID())) {
-						%>
+        if (userID != null && userID.equals(comment.getUserID())) {
+        %>
 						<button onclick="showEditForm('<%=comment.getCmtID()%>')"
 							class="btn btn-default btn-xs">수정</button>
 						<form id="editForm_<%=comment.getCmtID()%>" style="display: none;"
-							action="cmtUpdateAction.jsp" method="post">
+							action="gcmtUpdateAction.jsp" method="post">
 							<input type="hidden" name="cmtID" value="<%=comment.getCmtID()%>">
 							<input type="text" name="cmtContent"
 								value="<%=comment.getCmtContent()%>">
@@ -216,17 +220,17 @@
 						</form>
 
 						<!-- 댓글 삭제 -->
-						<form action="cmtDeleteAction.jsp" method="post">
+						<form action="gcmtDeleteAction.jsp" method="post">
 							<input type="hidden" name="cmtID" value="<%=comment.getCmtID()%>">
 							<button type="submit" class="btn btn-default btn-xs">삭제</button>
 						</form>
 						<%
-						}
-						%>
+        }
+        %>
 					</div>
 					<%
-					}
-					%>
+    }
+    %>
 				</div>
 
 				<!-- 댓글 수정폼 -->
@@ -237,10 +241,6 @@
 					}
 				</script>
 			</div>
-
-
-
-
 
 		</section>
 
