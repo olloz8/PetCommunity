@@ -11,6 +11,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name=viewport content="width=device-width , intial-scale=1">
+<title>멍어스</title>
 
 <link href="resources/css/bbsWrite.css" rel="stylesheet" type="text/css">
 <link href="resources/css/profile.css" rel="stylesheet" type="text/css">
@@ -107,7 +108,7 @@
 							</tbody>
 						</table>
 
-						<br> <input type="submit" class="btn btn-dark" value="수정완료" />
+						<br> <input type="submit" class="btn btn-info" value="수정완료" />
 					</div>
 				</div>
 			</section>

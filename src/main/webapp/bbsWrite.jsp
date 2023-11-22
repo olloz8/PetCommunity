@@ -68,7 +68,7 @@
 							</tbody>
 						</table>
 
-						<br> <input type="submit" class="btn btn-dark" value="글쓰기 완료" />
+						<br> <input type="submit" class="btn btn-info" value="글쓰기 완료" />
 					</div>
 				</div>
 			</section>

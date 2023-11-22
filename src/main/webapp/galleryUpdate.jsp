@@ -8,9 +8,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name=viewport content="width=device-width , intial-scale=1">
+<title>멍어스</title>
 
-<link href="resources/css/galleryWrite.css" rel="stylesheet"
-	type="text/css">
+<link href="resources/css/bbsWrite.css" rel="stylesheet" type="text/css">
 <link href="resources/css/profile.css" rel="stylesheet" type="text/css">
 <link href="resources/css/fix.css" rel="stylesheet" type="text/css">
 
@@ -63,8 +63,7 @@
 	<div id="root">
 		<%@include file="fix.jsp"%>
 
-		<form method="post"
-			action="galleryUpdateAction.jsp?galleryID=<%=galleryID%>">
+		<form method="post" enctype="multipart/form-data" action="galleryUpdateAction.jsp?galleryID=<%=galleryID%>">
 			<section id="container">
 				<div id="container_box">
 					<div style="width: 60%; margin: auto;">
@@ -98,12 +97,12 @@
 									<td><input type="file" name="fileName"> <%-- 선택된 파일명을 출력하는 부분 추가 --%>
 										<% if (gallery != null && gallery.getFileName() != null && !gallery.getFileName().isEmpty()) { %>
 										<br> <span>현재 업로드된 파일: <%= gallery.getFileName() %></span>
-										<% } %></td>
+									<% } %>
 								</tr>
 							</tbody>
 						</table>
 
-						<br> <input type="submit" class="btn btn-dark" value="수정완료" />
+						<br> <input type="submit" class="btn btn-info" value="수정완료" />
 					</div>
 				</div>
 			</section>

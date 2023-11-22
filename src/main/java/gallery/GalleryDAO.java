@@ -273,24 +273,6 @@ public class GalleryDAO {
 
 	        return gallery;
 	    }
-		
-	    
-	    
-	 // GalleryDAO 클래스에 추가할 메서드
-	    public int updateWithFile(int galleryID, String galleryTitle, String galleryContent, String fileName) {
-	        String SQL = "UPDATE GALLERY SET galleryTitle = ?, galleryContent = ?, fileName = ? WHERE galleryID = ?";
-	        try {
-	            PreparedStatement pstmt = conn.prepareStatement(SQL);
-	            pstmt.setString(1, galleryTitle);
-	            pstmt.setString(2, galleryContent);
-	            pstmt.setString(3, fileName);
-	            pstmt.setInt(4, galleryID);
-	            return pstmt.executeUpdate();
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	        return -1; // DB 오류 
-	    }
 
 		// 게시글 및 해당 파일 삭제
 		public int deleteGallery(int galleryID) {
@@ -392,54 +374,117 @@ public class GalleryDAO {
 		    return false;
 		}
 
-		// 파일을 수정할 수 있는 메서드
 		public int updateWithFile(int galleryID, String galleryTitle, String galleryContent, String fileName, String fileRealName) {
-		    if (isFileExist(galleryID)) {
-		        // 파일이 존재하면 파일명과 실제 파일명도 함께 업데이트
-		        String SQL = "UPDATE GALLERY SET galleryTitle = ?, galleryContent = ?, fileName = ?, fileRealName = ? WHERE galleryID = ?";
-		        try {
-		            PreparedStatement pstmt = conn.prepareStatement(SQL);
-		            pstmt.setString(1, galleryTitle);
-		            pstmt.setString(2, galleryContent);
-		            pstmt.setString(3, fileName);
-		            pstmt.setString(4, fileRealName);
-		            pstmt.setInt(5, galleryID);
-		            return pstmt.executeUpdate();
-		        } catch (Exception e) {
-		            e.printStackTrace();
+		    try {
+		        conn.setAutoCommit(false);  // 트랜잭션 시작
+
+		        // 파일이 존재하는지 확인
+		        if (isFileExist(galleryID)) {
+		            // 기존 파일 삭제
+		            if (deleteFile(galleryID)) {
+		                // 파일 삭제 성공 시 새로운 파일로 업데이트
+		                String SQL = "UPDATE GALLERY SET galleryTitle = ?, galleryContent = ?, fileName = ?, fileRealName = ? WHERE galleryID = ?";
+		                try (PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+		                	
+		                	System.out.println("Executing SQL: " + SQL);
+		                    pstmt.setString(1, galleryTitle);
+		                    pstmt.setString(2, galleryContent);
+		                    pstmt.setString(3, fileName);
+		                    pstmt.setString(4, fileRealName);
+		                    pstmt.setInt(5, galleryID);
+		                    int result = pstmt.executeUpdate();
+
+		                    System.out.println("Execution result: " + result);
+		                    
+		                    conn.commit();  // 트랜잭션 커밋
+		                    return result;
+		                } catch (SQLException e) {
+		                    conn.rollback();  // 트랜잭션 롤백
+		                    e.printStackTrace();
+		                }
+		            }
+		        } else {
+		            // 기존 파일이 없으면 파일 정보 변경 없이 업데이트
+		            String SQL = "UPDATE GALLERY SET galleryTitle = ?, galleryContent = ?, fileName = ?, fileRealName = ? WHERE galleryID = ?";
+		            try (PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+		                pstmt.setString(1, galleryTitle);
+		                pstmt.setString(2, galleryContent);
+		                pstmt.setString(3, fileName);
+		                pstmt.setString(4, fileRealName);
+		                pstmt.setInt(5, galleryID);
+		                int result = pstmt.executeUpdate();
+
+		                conn.commit();  // 트랜잭션 커밋
+		                return result;
+		            } catch (SQLException e) {
+		                conn.rollback();  // 트랜잭션 롤백
+		                e.printStackTrace();
+		            }
 		        }
-		    } else {
-		        // 파일이 존재하지 않으면 파일명과 실제 파일명은 업데이트하지 않음
-		        String SQL = "UPDATE GALLERY SET galleryTitle = ?, galleryContent = ? WHERE galleryID = ?";
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
 		        try {
-		            PreparedStatement pstmt = conn.prepareStatement(SQL);
-		            pstmt.setString(1, galleryTitle);
-		            pstmt.setString(2, galleryContent);
-		            pstmt.setInt(3, galleryID);
-		            return pstmt.executeUpdate();
-		        } catch (Exception e) {
+		            conn.setAutoCommit(true);  // 트랜잭션 종료 후 자동 커밋으로 변경
+		        } catch (SQLException e) {
 		            e.printStackTrace();
 		        }
 		    }
 
-		    return -1; // DB 오류 
+		    return -1;  // DB 오류
 		}
-		
-		// GalleryDAO 클래스에 추가된 메서드
-		public int update(int galleryID, String galleryTitle, String galleryContent) {
-		    String SQL = "UPDATE GALLERY SET galleryTitle = ?, galleryContent = ? WHERE galleryID = ?";
-		    try {
-		        PreparedStatement pstmt = conn.prepareStatement(SQL);
-		        pstmt.setString(1, galleryTitle);
-		        pstmt.setString(2, galleryContent);
-		        pstmt.setInt(3, galleryID);
-		        return pstmt.executeUpdate();
-		    } catch (Exception e) {
-		        e.printStackTrace();
+
+		// 파일을 삭제하는 메서드
+		public boolean deleteFile(int galleryID) {
+		    // 파일이 존재하는지 확인
+		    if (isFileExist(galleryID)) {
+		        String selectSQL = "SELECT fileName FROM GALLERY WHERE galleryID = ?";
+		        try (PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
+		            pstmt.setInt(1, galleryID);
+		            try (ResultSet rs = pstmt.executeQuery()) {
+		                if (rs.next()) {
+		                    String fileName = rs.getString("fileName");
+		                    String filePath = "C:\\Users\\82103\\eclipse-workspace\\PetCommunity\\src\\main\\webapp\\uploded" + File.separator + fileName;
+
+		                    File file = new File(filePath);
+		                    if (file.exists() && file.isFile()) {
+		                        // 파일 삭제 성공 시 DB에서 해당 파일 정보 삭제
+		                        if (file.delete()) {
+		                            // DB에서 해당 파일 정보 삭제
+		                            String updateSQL = "UPDATE GALLERY SET fileName = null, fileRealName = null WHERE galleryID = ?";
+		                            try (PreparedStatement updatePstmt = conn.prepareStatement(updateSQL)) {
+		                                updatePstmt.setInt(1, galleryID);
+		                                updatePstmt.executeUpdate();
+		                                return true;  // 파일 삭제 및 DB 업데이트 성공 시 true 반환
+		                            } catch (SQLException e) {
+		                                e.printStackTrace();
+		                            }
+		                        }
+		                    }
+		                }
+		            }
+		        } catch (SQLException e) {
+		            e.printStackTrace();
+		        }
 		    }
-		    return -1; // DB 오류 
+		    return false;  // 파일이 존재하지 않거나 삭제 실패 시 false 반환
 		}
 		
+	    // 갤러리 업데이트 메서드
+	    public int update(int galleryID, String galleryTitle, String galleryContent) {
+	        String SQL = "UPDATE GALLERY SET galleryTitle = ?, galleryContent = ? WHERE galleryID = ?";
+	        try {
+	            PreparedStatement pstmt = conn.prepareStatement(SQL);
+	            pstmt.setString(1, galleryTitle);
+	            pstmt.setString(2, galleryContent);
+	            pstmt.setInt(3, galleryID);
+	            return pstmt.executeUpdate();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        return -1; // DB 오류 
+	    }
+	    
 	    // 리소스를 닫는 메서드
 	    private void closeResources(PreparedStatement pstmt, ResultSet rs) {
 	        try {

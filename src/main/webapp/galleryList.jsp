@@ -109,9 +109,6 @@
 				<% 
                 }
             %>
-				<button>
-					<a href="galleryWrite.jsp">글쓰기</a>
-				</button>
 			</div>
 		</section>
 

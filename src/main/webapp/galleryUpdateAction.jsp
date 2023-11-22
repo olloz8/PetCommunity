@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page import="gallery.GalleryDAO" %>
 <%@ page import="java.io.IOException" %>
 <%@ page import="java.io.File" %>
 <%@ page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy" %>
 <%@ page import="com.oreilly.servlet.MultipartRequest" %>
-<%@ page import="java.sql.SQLException" %>
 
 <%
     request.setCharacterEncoding("UTF-8");
@@ -43,13 +43,14 @@
             } else {
                 result = galleryDAO.update(galleryID, galleryTitle, galleryContent);
             }
-
+            System.out.println("Result of update operation: " + result);
+            
             if (result != -1) {
                 // 글 수정 성공 시 해당 게시글로 이동
                 response.sendRedirect("galleryView.jsp?galleryID=" + galleryID);
             } else {
                 // 글 수정 실패 시
-                response.sendRedirect("galleryEdit.jsp?galleryID=" + galleryID);
+                response.sendRedirect("galleryUpdate.jsp?galleryID=" + galleryID);
             }
         } catch (Exception e) {
             e.printStackTrace();

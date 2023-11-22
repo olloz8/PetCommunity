@@ -41,6 +41,7 @@
 			</div>
 			<br>
 			<ul>
+				<li><a href="meongUs.jsp">About 멍어스</a></li>
 				<li><a href="bbsList.jsp?selectedBoardID=1">자유게시판</a></li>
 				<li><a href="bbsList.jsp?selectedBoardID=2">질문게시판</a></li>
 				<li><a href="galleryList.jsp">멍갤러리</a></li>
