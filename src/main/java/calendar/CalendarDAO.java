@@ -9,6 +9,9 @@ public class CalendarDAO {
     private final String user = "root";
     private final String password = "1234";
 
+    
+    
+    
     public int addEvent(Calendar calendar) {
         if (calendar == null) {
             throw new IllegalArgumentException("calendar cannot be null");
