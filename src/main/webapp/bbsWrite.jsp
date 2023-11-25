@@ -45,6 +45,7 @@
 						<table class="table table-striped"
 							style="text-align: center; border: 1px solid #dddddd">
 							<thead>
+								<p style="text-align : left;"> 📢멍갤러리는 멍갤러리 카테고리에 들어간 후 프로필 글쓰기 버튼을 눌러주세요.</p>
 								<tr>
 									<th style="background-color: #eeeee; text-align: center;">글쓰기</th>
 								</tr>
@@ -53,7 +54,8 @@
 											<option value="">--게시판선택--</option>
 											<option value="1">자유게시판</option>
 											<option value="2">질문게시판</option>
-									</select></td>
+									</select>
+									</td>
 								</tr>
 							</thead>
 							<tbody>

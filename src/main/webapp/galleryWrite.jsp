@@ -59,10 +59,11 @@
 								</tr>
 								<tr>
 									<td><input type="file" name="file"></td>
+	
 								</tr>
 							</tbody>
 						</table>
-
+						<p style="text-align : left;"> 📢사진을 첨부 하지 않으면 글이 보이지 않으니 꼭 첨부 해주시길 바랍니다.</p>
 						<br> <input type="submit" class="btn btn-info" value="글쓰기 완료" />
 					</div>
 				</div>

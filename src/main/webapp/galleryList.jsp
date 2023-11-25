@@ -59,8 +59,11 @@
 
 		<section id="container">
 			<div id="container_box">
-				<h3>멍갤러리</h3>
-
+                <h3>멍갤러리</h3>
+                    📢 강아지 사진을 올려보세요! 게시글 작성 시 꼭 사진 첨부 바랍니다. <br>
+                    💡 사진 클릭 시 상세 페이지로 넘어갑니다.
+                    
+                <br><br>
 <div class="gallery">
     <%
         try {
@@ -99,13 +102,13 @@
 				<%
                 if(pageNumber != 1) { //현재 페이지가 있는지, 버튼 생성
             %>
-				<a href="gallery.jsp?pageNumber=<%=pageNumber - 1 %>"
-					class="btn btn-success btn-arraw-left">이전</a>
+				<a href="galleryList.jsp?pageNumber=<%=pageNumber - 1 %>"
+					class="btn btn-success btn-infp">이전</a>
 				<%
                 } if(galleryDAO.nextPage(pageNumber + 1)) { //다음 페이지가 존재하는지
             %>
-				<a href="gallery.jsp?pageNumber=<%=pageNumber + 1 %>"
-					class="btn btn-success btn-arraw-left">다음</a>
+				<a href="galleryList.jsp?pageNumber=<%=pageNumber + 1 %>"
+					class="btn btn-success btn-info">다음</a>
 				<% 
                 }
             %>

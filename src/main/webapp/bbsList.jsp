@@ -43,13 +43,10 @@
     String boardContent ="";
     if (selectedBoardID == 1) {
         boardTitle = "자유게시판";
-        boardContent = "* 주제 상관없이 자유롭게 대화하는 게시판입니다. *";
+        boardContent = "📢 주제 상관없이 자유롭게 대화해보세요!";
     } else if (selectedBoardID == 2) {
         boardTitle = "질문게시판";
-        boardContent = "* 강아지 관련 질문 이외 질문들은 금지입니다. *";
-    } else if (selectedBoardID == 3) {
-        boardTitle = "멍갤러리";
-        boardContent = "* 강아지 사진 올리는 공간 *";
+        boardContent = "📢 강아지와 관련된 질문을 올려보세요!";
     } // 다른 게시판에 대한 조건 추가
     %>
 
@@ -59,7 +56,7 @@
 		<section id="container">
 			<div id="container_box">
 				<h3><%= boardTitle %></h3>
-				<h6><%= boardContent %></h6>
+				<h5><%= boardContent %></h5>
 
 				<table class="board-table">
 					<thead>
@@ -94,13 +91,12 @@
 if (pageNumber != 1) {
 %>
 				<a
-					href="bbsList.jsp?pageNumber=<%=pageNumber - 1%>&selectedBoardID=<%=selectedBoardID%>">이전</a>
+					href="bbsList.jsp?pageNumber=<%=pageNumber - 1%>&selectedBoardID=<%=selectedBoardID%>" class="btn btn-success btn-info">이전</a>
 				<%
 }
 if (bbsDAO.nextPage(pageNumber + 1)) {
 %>
-				<a
-					href="bbsList.jsp?pageNumber=<%=pageNumber + 1%>&selectedBoardID=<%=selectedBoardID%>">다음</a>
+				<a href="bbsList.jsp?pageNumber=<%=pageNumber + 1%>&selectedBoardID=<%=selectedBoardID%>" class="btn btn-success btn-info">다음</a>
 				<%
 }
 %>

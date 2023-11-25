@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,6 +25,19 @@
 	crossorigin="anonymous">
 
 <title>멍어스</title>
+<style>
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+	font-family: 'GmarketSansMedium', sans-serif;
+
+}
+</style>
 </head>
 <body>
 	<header id="header">
@@ -47,7 +60,8 @@
 				<li><a href="galleryList.jsp">멍갤러리</a></li>
 				<li><a href="calendar.jsp">멍캘린더</a></li>
 				<li><a href="map.jsp">동물병원찾기</a></li>
-				<li><a href="https://www.youtube.com/@Bodeumofficial" target='_blank'>강형욱의 보듬TV</a></li>
+				<li><a href="https://www.youtube.com/@Bodeumofficial"
+					target='_blank'>강형욱의 보듬TV</a></li>
 			</ul>
 		</aside>
 	</section>

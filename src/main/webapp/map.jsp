@@ -26,7 +26,7 @@
 
 #menu_wrap {
 	position: absolute;
-	top: 0;
+	top: 8;
 	left: 0;
 	bottom: 0;
 	width: 250px;
@@ -201,7 +201,9 @@
 		<%@ include file="fix.jsp"%>
 		<section id="container">
 			<div id="container_box">
-				<h6>* 우리 지역 동물병원을 검색해보세요. *</h6>
+                <h3>동물병원찾기</h3>
+                    📢 우리지역 동물병원을 검색해보세요! 
+                    <br>
 			</div>
 
 			<div class="map_wrap">

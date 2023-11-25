@@ -44,11 +44,9 @@
         <%@ include file="fix.jsp" %>
         <section id="container">
             <div id="container_box">
-                <h6>📢 강아지의 일정을 추가해보세요.
-                    <br>
-                    <br>* 원하는 날짜 클릭 후 일정 추가 기능
-                    <br>* 추가된 일정 클릭 시 수정, 삭제 가능</h6>
-                <br>
+                <h3>멍캘린더</h3>
+                    📢 날짜 선택 후 일정을 추가해보세요! 
+                <br><br>
             </div>
 
             <!-- 캘린더 -->
@@ -84,7 +82,6 @@
                 </div>
             </div>
             
-            CalendarDAO calendarDAO = new CalendarDAO();
 
 <script>
 
