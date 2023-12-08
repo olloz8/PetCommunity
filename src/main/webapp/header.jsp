@@ -8,6 +8,6 @@
 </head>
 <body>
 	<h1 class = "title">
-		<a href="main.jsp">멍어스</a></h1>
+		<a href="index.jsp">멍어스</a></h1>
 </body>
 </html>

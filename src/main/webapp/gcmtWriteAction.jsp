@@ -24,7 +24,7 @@
     // galleryID 유효성 검사
     if (galleryIDStr == null) {
         // galleryID가 없는 경우 처리 로직
-        response.sendRedirect("error.jsp");
+        response.sendRedirect("galleryList.jsp");
         return;
     }
     int galleryID = 0;
@@ -32,7 +32,7 @@
         galleryID = Integer.parseInt(galleryIDStr);
     } catch (NumberFormatException e) {
         // galleryID가 정수로 변환할 수 없는 경우 처리 로직
-        response.sendRedirect("error.jsp");
+        response.sendRedirect("galleryList.jsp");
         return;
     }
     gcomment.setGalleryID(galleryID);

@@ -22,7 +22,7 @@
     // bbsID 유효성 검사
     if (bbsIDStr == null) {
         // bbsID가 없는 경우 처리 로직
-        response.sendRedirect("error.jsp");
+        response.sendRedirect("index.jsp");
         return;
     }
     int bbsID = 0;
@@ -30,7 +30,7 @@
         bbsID = Integer.parseInt(bbsIDStr);
     } catch (NumberFormatException e) {
         // bbsID가 정수로 변환할 수 없는 경우 처리 로직
-        response.sendRedirect("error.jsp");
+        response.sendRedirect("index.jsp");
         return;
     }
     comment.setBbsID(bbsID);

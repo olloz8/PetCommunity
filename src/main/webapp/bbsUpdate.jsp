@@ -49,7 +49,7 @@
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('유효하지 않은 글입니다.')");
-		script.println("location.href='bbs.jsp'");
+		script.println("location.href='index.jsp'");
 		script.println("<script>");
 	}
 	Bbs bbs = new BbsDAO().getBbs(bbsID);
@@ -57,7 +57,7 @@
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('권한이 없습니다.')");
-		script.println("location.href='bbs.jsp'");
+		script.println("location.href='index.jsp'");
 		script.println("<script>");
 	}
 	%>
@@ -101,9 +101,6 @@
 								<tr>
 									<td><textarea class="form-control" placeholder="글 내용"
 											name="bbsContent" maxlangth="2048" style="height: 350px;"><%=bbs.getBbsContent()%></textarea></td>
-								</tr>
-								<tr>
-									<td><input type="file" name="fileName"></td>
 								</tr>
 							</tbody>
 						</table>

@@ -32,7 +32,7 @@
         PrintWriter script = response.getWriter();
         script.println("<script>");
         script.println("alert('유효하지 않은 댓글입니다.')");
-        script.println("location.href='bbs.jsp'");
+        script.println("location.href='index.jsp'");
         script.println("</script>");
     }
     Comment comment = new CommentDAO().getComment(cmtID);

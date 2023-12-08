@@ -30,18 +30,18 @@
         PrintWriter script = response.getWriter();
         script.println("<script>");
         script.println("alert('유효하지 않은 댓글입니다.')");
-        script.println("location.href='gallery.jsp'");
+        script.println("location.href='galleryList.jsp'");
         script.println("</script>");
     }
-    GComment comment = new GCommentDAO().getComment(cmtID); // Comment -> GComment, CommentDAO -> GCommentDAO로 수정
+    GComment comment = new GCommentDAO().getComment(cmtID);
     if (!userID.equals(comment.getUserID())) {
         PrintWriter script = response.getWriter();
         script.println("<script>");
         script.println("alert('권한이 없습니다.')");
-        script.println("location.href='gallery.jsp'");
+        script.println("location.href='galleryList.jsp'");
         script.println("</script>");
     } else {
-        GCommentDAO commentDAO = new GCommentDAO(); // CommentDAO -> GCommentDAO로 수정
+        GCommentDAO commentDAO = new GCommentDAO();
         int result = commentDAO.delete(cmtID);
         if (result == -1){
             PrintWriter script = response.getWriter();

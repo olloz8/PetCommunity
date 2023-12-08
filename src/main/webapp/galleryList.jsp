@@ -4,7 +4,7 @@
 <%@ page import="gallery.GalleryDAO"%>
 <%@ page import="gallery.Gallery"%>
 <%@ page import="java.util.ArrayList"%>
-<%@ page import="file.fileDAO, java.util.List" %>
+<%@ page import="java.util.List" %>
 
 <!DOCTYPE html>
 <html>

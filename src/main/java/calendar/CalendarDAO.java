@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class CalendarDAO {
     private final String url = "jdbc:mysql://localhost:3306/dogcommunity";
     private final String user = "root";
-    private final String password = "1234";
+    private final String password = "rootpw";
 
     
     

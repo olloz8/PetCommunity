@@ -46,7 +46,7 @@
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('유효하지 않은 글입니다.')");
-		script.println("location.href='gallery.jsp'");
+		script.println("location.href='galleryList.jsp'");
 		script.println("<script>");
 	}
 	Gallery gallery = new GalleryDAO().getGallery(galleryID);
@@ -54,7 +54,7 @@
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('권한이 없습니다.')");
-		script.println("location.href='gallery.jsp'");
+		script.println("location.href='galleryList.jsp'");
 		script.println("<script>");
 	}
 	%>

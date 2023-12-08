@@ -27,7 +27,7 @@ request.setCharacterEncoding("UTF-8");
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('이미 로그인이 되어있습니다.')");
-		script.println("location.href = 'main.jsp'"); // 메인페이지로 보냄
+		script.println("location.href = 'index.jsp'"); // 메인페이지로 보냄
 		script.println("</script>");
 	}
 	UserDAO userDAO = new UserDAO();
@@ -36,7 +36,7 @@ request.setCharacterEncoding("UTF-8");
 		   session.setAttribute("userID", user.getUserID());//userID를 세션값할당
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
-		script.println("location.href = 'main.jsp'"); // 로그인 되면 이동할페이지
+		script.println("location.href = 'index.jsp'"); // 로그인 되면 이동할페이지
 		script.println("</script>");
 	} else if (result == 0) { // 비밀번호 불일치시
 		PrintWriter script = response.getWriter();

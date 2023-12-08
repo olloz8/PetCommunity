@@ -16,7 +16,7 @@ public class UserDAO {
 
 			String dbURL = "jdbc:mysql://localhost:3306/dogcommunity";
 			String dbID = "root";
-			String dbPassword = "1234";
+			String dbPassword = "rootpw";
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(dbURL, dbID, dbPassword);
 		} catch (Exception e) {

@@ -30,7 +30,7 @@
         PrintWriter script = response.getWriter();
         script.println("<script>");
         script.println("alert('유효하지 않은 글입니다.')");
-        script.println("location.href='bbs.jsp'");
+        script.println("location.href='index.jsp'");
         script.println("</script>");
     }
     Bbs bbs = new BbsDAO().getBbs(bbsID);
@@ -38,7 +38,7 @@
         PrintWriter script = response.getWriter();
         script.println("<script>");
         script.println("alert('권한이 없습니다.')");
-        script.println("location.href='bbs.jsp'");
+        script.println("location.href='index.jsp'");
         script.println("</script>");
     } else {
         // boardID를 여기서 얻어와야 함
